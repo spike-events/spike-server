@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: spike
       POSTGRES_PASSWORD: spike
       POSTGRES_DB: spike
+    ports:
+      - "5432:5432"
     volumes:
       - database-data:/var/lib/postgresql/data/
 
@@ -20,7 +22,7 @@ services:
     ports:
       - "5672:5672"
     environment:
-      DB_CONN: "host=db port=5432 user=spike dbname=spike password=spike sslmode=disable timezone=UTC"
+      SPIKE_DB_CONN: "host=db port=5432 user=spike dbname=spike password=spike sslmode=disable timezone=UTC"
 
 volumes:
   database-data:

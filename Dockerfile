@@ -1,16 +1,14 @@
-FROM golang:alpine as build
+FROM golang:alpine AS build
+RUN apk --no-cache add ca-certificates
+ADD . /src
 WORKDIR /src
-COPY cmd cmd
-COPY bin bin
-COPY internal internal
-COPY go.mod go.mod
-COPY go.sum go.sum
-COPY pkg pkg
-RUN apk add git && go build -o spike cmd/main.go
+RUN go build -o goapp -gcflags="-dwarflocationlists=true"
 
 FROM alpine
+RUN apk add --no-cache tzdata
+#ENV TZ=America/Sao_Paulo
+#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
-COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=build /src/spike /app/
-
-ENTRYPOINT ["/app/spike"]
+COPY --from=build /src/goapp /app/
+EXPOSE 3333
+ENTRYPOINT ./goapp

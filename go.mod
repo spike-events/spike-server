@@ -2,7 +2,7 @@ module github.com/spike-events/spike-server
 
 go 1.17
 
-require github.com/spike-events/spike-events v0.1.6
+require github.com/spike-events/spike-events v0.1.8
 
 require (
 	github.com/golang/protobuf v1.5.0 // indirect
